@@ -1,0 +1,15 @@
+public class updateBrandDateTriggerHandler {
+
+    public void afterUpdate(Map<Id, Headphones__c> newObjectMap) {
+        Set<Id> brandIds = new Set<Id>();
+        for(Headphones__c headph_i: newObjectMap.values()){
+           brandIds.add(headph_i.Brand__c);
+        }
+        List<Brand__c> brandsForUpdate = new List<Brand__c>();
+        brandsForUpdate = [SELECT Id, Last_product_edit__c FROM Brand__c WHERE Id IN: brandIds];
+        for(Brand__c br: brandsForUpdate){
+            br.Last_product_edit__c = Datetime.now();
+        }
+        if(brandsForUpdate.size()>0) update brandsForUpdate;
+    }
+}
