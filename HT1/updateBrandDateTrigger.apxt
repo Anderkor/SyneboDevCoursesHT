@@ -1,0 +1,6 @@
+trigger updateBrandDateTrigger on Headphones__c (after update) {
+    updateBrandDateTriggerHandler handler = new updateBrandDateTriggerHandler();
+    if(Trigger.isAfter&&Trigger.isUpdate) {
+        handler.afterUpdate(Trigger.newMap);
+    }
+}
