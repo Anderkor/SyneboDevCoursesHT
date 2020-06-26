@@ -1,0 +1,34 @@
+public class AnimalAddInfoTriggerHandler {
+    @future(callout=true)
+    public static void httpHandler(Set<Id> animalPackIds){
+        List<Animal__c> animalPack = [Select Heroku_ID__c, Name,Eats__c,Says__c from Animal__c Where Id IN :animalPackIds];
+        List<AnimalModel> animals = new List<AnimalModel>();
+        Http http = new Http();
+        HttpRequest request = new HttpRequest();
+        for(Animal__c animal_i: animalPack) {
+            request.setEndpoint('https://th-apex-http-callout.herokuapp.com/animals/' + animal_i.Heroku_ID__c);
+            request.setMethod('GET');
+            HttpResponse response = http.send(request);
+            
+            if (response.getStatusCode() == 200) {
+                Map<String, AnimalModel> resultedAnimalMap = (Map<String, AnimalModel>)JSON.deserialize(response.getBody(),Map<String, AnimalModel>.class);
+                AnimalModel animalItem = resultedAnimalMap.get('animal');
+                animals.add(animalItem);
+             }
+        }
+        List<Animal__c> animalsToUpdate = new List<Animal__c>();
+        for(AnimalModel anMod: animals){
+            for(Animal__c an:animalPack){
+                if(an.Heroku_ID__c == anMod.id){
+                    an.Description__c = anMod.name;
+                    an.Eats__c = anMod.eats;
+                    an.Says__c = anMod.says;
+                    animalsToUpdate.add(an);
+                }
+        	}
+        }
+        if(animalsToUpdate.size()>0) {
+            update animalsToUpdate;
+        }
+    }
+}
