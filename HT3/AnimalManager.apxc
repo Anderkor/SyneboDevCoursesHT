@@ -36,8 +36,6 @@ global without sharing class AnimalManager{
             RestContext.response.statusCode = 200;
         } catch (CalloutException e) {
             RestContext.response.statusCode = 400;
-        } catch (JSONException  e) {
-            RestContext.response.statusCode = 400;
         } catch (Exception e) {
             RestContext.response.statusCode = 500;
         }
