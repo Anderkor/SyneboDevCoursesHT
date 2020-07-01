@@ -1,0 +1,16 @@
+global class AddLeadEmailProviderBatch implements Database.Batchable<sObject> {
+	global Database.QueryLocator start(Database.BatchableContext bc) {
+        return Database.getQueryLocator('SELECT ID,Email,Email_provider__c FROM Lead WHERE Email != Null AND Email_provider__c = Null');
+    }
+    
+    global void execute(Database.BatchableContext bc, List<Lead> records){
+        for(Lead record : records){
+            record.Email_provider__c = record.Email.split('@')[1];
+        }
+        update records;
+    } 
+    
+    global void finish(Database.BatchableContext bc){
+        System.debug('Leads have been updated');
+    }    
+}
