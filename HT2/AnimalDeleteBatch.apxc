@@ -1,0 +1,11 @@
+global class AnimalDeleteBatch implements Database.Batchable<sObject> {
+    global Database.QueryLocator start(Database.BatchableContext bc) {
+        return Database.getQueryLocator('SELECT ID FROM Animal_c ');
+    }
+    global void execute(Database.BatchableContext bc, List<Animal__C> records){
+        delete records;
+    }    
+    global void finish(Database.BatchableContext bc){
+        System.debug('Animals have been deleted');
+    }    
+}
