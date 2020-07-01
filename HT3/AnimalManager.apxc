@@ -23,11 +23,11 @@ global without sharing class AnimalManager{
                                     FROM Animal__c
                                     WHERE Heroku_Id__c = :animalId LIMIT 1];
             
-            Map<String, AnimalModel> resultedAnimalMap = (Map<String, AnimalModel>)JSON.deserialize(request.requestBody.tostring(),Map<String, AnimalModel>.class);
-            AnimalModel animalItem = resultedAnimalMap.get('animal');
-            animal.Description__c = animalItem.name;
-            animal.Eats__c = animalItem.eats;
-            animal.Says__c = animalItem.says;
+            AnimalModel resultedAnimal = (AnimalModel)JSON.deserialize(request.requestBody.tostring(),AnimalModel.class);
+            animal.Heroku_ID__c = resultedAnimal.id;    
+            animal.Description__c = resultedAnimal.name;
+            animal.Eats__c = resultedAnimal.eats;
+            animal.Says__c = resultedAnimal.says;
 
             update animal;
             } else {
