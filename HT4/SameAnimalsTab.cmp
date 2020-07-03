@@ -1,0 +1,7 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="SameAnimalsTabController">
+    <aura:attribute name="recordId" type="String" />
+         <aura:attribute name="animals" type="Animal__c[]"/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    <lightning:datatable data="{!v.animals }" columns="{!v.mycolumns }" keyField="id" hideCheckboxColumn="true" />
+</aura:component>
