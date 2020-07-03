@@ -1,0 +1,13 @@
+public class SameAnimalsTabController {
+    @AuraEnabled
+    public static List<Animal__c> returnSameAnimals(String extId){
+        Animal__c sample = [SELECT Heroku_ID__c FROM ANIMAL__c WHERE ID =:extId];
+        List <Animal__c> result = [SELECT ID,Name,Description__c,Eats__c,Says__c 
+                                   FROM Animal__c 
+                                   WHERE Heroku_ID__c =:sample.Heroku_ID__c 
+                                   AND Id !=:extid];
+        System.debug(result);
+        
+        return result;
+    }
+}
