@@ -1,0 +1,30 @@
+@isTest
+private class TestSameAnimalTab {
+    @isTest static void TestReturnSameAnimals() {
+        StaticResourceCalloutMock mock = new StaticResourceCalloutMock();
+        mock.setStaticResource('GetAnimalResource');
+        mock.setStatusCode(200);
+        mock.setHeader('Content-Type', 'application/json;charset=UTF-8');
+        Test.setMock(HttpCalloutMock.class, mock);
+        Animal__c[] testAnimals = new List<Animal__c>();
+        testAnimals.add(new Animal__c(Name='Test Animal 1',Heroku_ID__c = 1));
+        testAnimals.add(new Animal__c(Name='Test Animal 2',Heroku_ID__c = 1));
+        insert testAnimals;
+        System.assertEquals(testAnimals[1].Name,
+                            SameAnimalsTabController.returnSameAnimals(testAnimals[0].id)[0].Name);
+    }
+    @isTest static void TestSearchAnimal() {
+        StaticResourceCalloutMock mock = new StaticResourceCalloutMock();
+        mock.setStaticResource('GetAnimalResource');
+        mock.setStatusCode(200);
+        mock.setHeader('Content-Type', 'application/json;charset=UTF-8');
+        Test.setMock(HttpCalloutMock.class, mock);
+        Animal__c[] testAnimals = new List<Animal__c>();
+        testAnimals.add(new Animal__c(Name='Test Animal 1',Heroku_ID__c = 1));
+        testAnimals.add(new Animal__c(Name='Test Animal 2',Heroku_ID__c = 1));
+        insert testAnimals;
+        Test.setFixedSearchResults(new List<ID>{testAnimals[0].id,testAnimals[1].id});
+        System.assertEquals(2,SameAnimalsTabController.searchAnimal('Animal').size());
+    }
+   
+}
