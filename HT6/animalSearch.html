@@ -1,0 +1,8 @@
+<template>
+    <lightning-input label="Search animals" value={searchItems} onchange={handleItemChange}>
+    </lightning-input>
+    <lightning-button label="Search" onclick={searchClick}>
+    </lightning-button>
+    <lightning-datatable columns={columns} data={animals} key-field="Id">
+    </lightning-datatable>
+</template>
